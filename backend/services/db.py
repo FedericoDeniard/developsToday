@@ -113,7 +113,10 @@ class Database:
         cat_in_mission = await self.pool.fetchrow("SELECT * FROM missions WHERE assigned_cat = $1", cat_id)
         if cat_in_mission:
             raise ValueError("Cat is assigned to a mission")
-        await self.pool.execute("DELETE FROM cats WHERE id = $1", cat_id)
+        result = await self.pool.execute("DELETE FROM cats WHERE id = $1", cat_id)
+        deleted_count = int(result.split()[-1])
+        if deleted_count == 0:
+            raise ValueError("Cat not found")
     
     async def update_cat_salary(self, cat_id: int, salary: int):
         await self.pool.execute("UPDATE cats SET salary = $1 WHERE id = $2", salary, cat_id)
