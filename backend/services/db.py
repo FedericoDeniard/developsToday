@@ -1,6 +1,6 @@
 from enum import Enum
 from re import A
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import Optional
 import asyncpg
 import httpx
