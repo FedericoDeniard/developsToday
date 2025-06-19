@@ -24,17 +24,17 @@ export interface Mission {
   assigned_cat?: number | null
   status: "pending" | "active" | "completed" | "failed"
   title: string
-  targets: Target[]
+  targets?: Target[]
   created_at?: string
   updated_at?: string
 }
 
 export interface Target {
   id: number
+  assigned_mission: number
   status: "pending" | "active" | "completed" | "failed"
   name: string
   country: string
-  mission_id: number
   created_at?: string
   updated_at?: string
 }

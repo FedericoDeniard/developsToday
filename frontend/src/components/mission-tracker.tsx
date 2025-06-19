@@ -24,55 +24,8 @@ interface MissionTrackerProps {
   cats: SpyCat[]
 }
 
-// Mock missions data
-const mockMissions: Mission[] = [
-  {
-    id: "1",
-    title: "Operation Yarn Ball",
-    description: "Infiltrate the enemy's yarn manufacturing facility",
-    location: "Tokyo, Japan",
-    status: "active",
-    priority: "high",
-    assignedCatId: "1",
-    startDate: "2024-01-15",
-    progress: 65,
-  },
-  {
-    id: "2",
-    title: "Catnip Cartel Investigation",
-    description: "Investigate illegal catnip distribution network",
-    location: "Miami, FL",
-    status: "completed",
-    priority: "critical",
-    assignedCatId: "2",
-    startDate: "2024-01-10",
-    endDate: "2024-01-20",
-    progress: 100,
-  },
-  {
-    id: "3",
-    title: "Laser Pointer Heist",
-    description: "Recover stolen prototype laser pointer technology",
-    location: "Berlin, Germany",
-    status: "pending",
-    priority: "medium",
-    progress: 0,
-  },
-  {
-    id: "4",
-    title: "Tuna Factory Surveillance",
-    description: "Monitor suspicious activity at tuna processing plant",
-    location: "Barcelona, Spain",
-    status: "active",
-    priority: "low",
-    assignedCatId: "3",
-    startDate: "2024-01-18",
-    progress: 30,
-  },
-]
-
 export function MissionTracker({ cats }: MissionTrackerProps) {
-  const [missions] = useState<Mission[]>(mockMissions)
+  const [missions] = useState<Mission[]>([])
 
   const getStatusIcon = (status: Mission["status"]) => {
     switch (status) {
@@ -175,50 +128,58 @@ export function MissionTracker({ cats }: MissionTrackerProps) {
           <CardDescription>Track ongoing and upcoming spy operations</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="space-y-4">
-            {missions.map((mission) => {
-              const assignedCat = getAssignedCat(mission.assignedCatId)
+          {missions.length === 0 ? (
+            <div className="text-center py-8">
+              <Target className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+              <h3 className="text-lg font-semibold mb-2">No Missions Available</h3>
+              <p className="text-muted-foreground">Mission data will be loaded from your database when available.</p>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {missions.map((mission) => {
+                const assignedCat = getAssignedCat(mission.assignedCatId)
 
-              return (
-                <div key={mission.id} className="border rounded-lg p-4 space-y-3">
-                  <div className="flex items-start justify-between">
-                    <div className="space-y-1">
-                      <div className="flex items-center gap-2">
-                        <h3 className="font-semibold">{mission.title}</h3>
-                        <div className={`w-2 h-2 rounded-full ${getPriorityColor(mission.priority)}`} />
-                        <Badge variant={getStatusColor(mission.status)} className="flex items-center gap-1">
-                          {getStatusIcon(mission.status)}
-                          {mission.status}
-                        </Badge>
-                      </div>
-                      <p className="text-sm text-muted-foreground">{mission.description}</p>
-                      <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                        <div className="flex items-center gap-1">
-                          <MapPin className="h-3 w-3" />
-                          {mission.location}
+                return (
+                  <div key={mission.id} className="border rounded-lg p-4 space-y-3">
+                    <div className="flex items-start justify-between">
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-2">
+                          <h3 className="font-semibold">{mission.title}</h3>
+                          <div className={`w-2 h-2 rounded-full ${getPriorityColor(mission.priority)}`} />
+                          <Badge variant={getStatusColor(mission.status)} className="flex items-center gap-1">
+                            {getStatusIcon(mission.status)}
+                            {mission.status}
+                          </Badge>
                         </div>
-                        {assignedCat && (
+                        <p className="text-sm text-muted-foreground">{mission.description}</p>
+                        <div className="flex items-center gap-4 text-sm text-muted-foreground">
                           <div className="flex items-center gap-1">
-                            <span>Assigned to: {assignedCat.name}</span>
+                            <MapPin className="h-3 w-3" />
+                            {mission.location}
                           </div>
-                        )}
+                          {assignedCat && (
+                            <div className="flex items-center gap-1">
+                              <span>Assigned to: {assignedCat.name}</span>
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  {mission.status === "active" && (
-                    <div className="space-y-2">
-                      <div className="flex justify-between text-sm">
-                        <span>Progress</span>
-                        <span>{mission.progress}%</span>
+                    {mission.status === "active" && (
+                      <div className="space-y-2">
+                        <div className="flex justify-between text-sm">
+                          <span>Progress</span>
+                          <span>{mission.progress}%</span>
+                        </div>
+                        <Progress value={mission.progress} className="h-2" />
                       </div>
-                      <Progress value={mission.progress} className="h-2" />
-                    </div>
-                  )}
-                </div>
-              )
-            })}
-          </div>
+                    )}
+                  </div>
+                )
+              })}
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>
