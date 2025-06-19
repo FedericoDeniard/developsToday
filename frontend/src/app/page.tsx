@@ -78,9 +78,9 @@ export default function Dashboard() {
   }, [])
 
   return (
-    <div className="flex flex-col min-h-screen">
-      <header className="sticky top-0 z-40 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container flex h-14 items-center justify-between">
+    <>
+      <header className="sticky top-0 z-30 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div className="flex h-14 items-center justify-between px-6">
           <div className="flex items-center gap-4">
             <SidebarTrigger />
             <div className="flex items-center gap-2">
@@ -95,41 +95,44 @@ export default function Dashboard() {
         </div>
       </header>
 
-      <div className="flex-1 space-y-6 p-6">
-        {error && (
-          <Alert variant="destructive">
-            <AlertCircle className="h-4 w-4" />
-            <AlertDescription>{error}</AlertDescription>
-          </Alert>
-        )}
-
-        {!isLoading && !error && <StatsCards cats={cats} />}
-
-        <div id="add-cat">
-          <SpyCatForm onSubmit={handleAddCat} isLoading={isSubmitting} />
-        </div>
-
-        <div>
-          {isLoading ? (
-            <div className="flex items-center justify-center p-8">
-              <div className="text-center">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
-                <p className="text-muted-foreground">Loading spy cats...</p>
-              </div>
-            </div>
-          ) : (
-            <SpyCatsTable
-              cats={cats}
-              onUpdateSalary={handleUpdateSalary}
-              onDelete={handleDeleteCat}
-              isLoading={isSubmitting}
-            />
+      <main className="flex-1 overflow-auto">
+        <div className="space-y-6 p-6">
+          {error && (
+            <Alert variant="destructive">
+              <AlertCircle className="h-4 w-4" />
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
           )}
+
+          {!isLoading && !error && <StatsCards cats={cats} />}
+
+          <div id="add-cat">
+            <SpyCatForm onSubmit={handleAddCat} isLoading={isSubmitting} />
+          </div>
+
+          <div>
+            {isLoading ? (
+              <div className="flex items-center justify-center p-8">
+                <div className="text-center">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+                  <p className="text-muted-foreground">Loading spy cats...</p>
+                </div>
+              </div>
+            ) : (
+              <SpyCatsTable
+                cats={cats}
+                onUpdateSalary={handleUpdateSalary}
+                onDelete={handleDeleteCat}
+                isLoading={isSubmitting}
+              />
+            )}
+          </div>
+
+          <div id="missions">
+            <MissionTracker cats={cats} />
+          </div>
         </div>
-        <div id="missions">
-          <MissionTracker cats={cats} />
-        </div>
-      </div>
-    </div>
+      </main>
+    </>
   )
 }

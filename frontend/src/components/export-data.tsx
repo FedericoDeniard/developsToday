@@ -17,13 +17,18 @@ export function ExportData({ cats }: ExportDataProps) {
   const exportToCSV = () => {
     setIsExporting(true)
     try {
-      const headers = ["Name", "Breed", "Years of Experience", "Salary", "Created At"]
+      const headers = ["ID", "Name", "Breed", "Years of Experience", "Salary", "Created At"]
       const csvContent = [
         headers.join(","),
         ...cats.map((cat) =>
-          [`"${cat.name}"`, `"${cat.breed}"`, cat.yearsOfExperience, cat.salary, `"${cat.createdAt || "N/A"}"`].join(
-            ",",
-          ),
+          [
+            cat.id,
+            `"${cat.name}"`,
+            `"${cat.breed}"`,
+            cat.years_of_experience,
+            cat.salary,
+            `"${cat.created_at || "N/A"}"`,
+          ].join(","),
         ),
       ].join("\n")
 

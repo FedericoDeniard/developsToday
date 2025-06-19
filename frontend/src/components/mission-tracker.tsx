@@ -114,7 +114,7 @@ export function MissionTracker({ cats }: MissionTrackerProps) {
   }
 
   const getAssignedCat = (catId?: string) => {
-    return cats.find((cat) => cat.id === catId)
+    return cats.find((cat) => cat.id.toString() === catId)
   }
 
   const activeMissions = missions.filter((m) => m.status === "active").length

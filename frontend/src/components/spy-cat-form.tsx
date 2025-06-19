@@ -80,6 +80,7 @@ export function SpyCatForm({ onSubmit, isLoading = false }: SpyCatFormProps) {
                 id="experience"
                 type="number"
                 min="0"
+                max="50"
                 value={formData.years_of_experience}
                 onChange={(e) => handleInputChange("years_of_experience", Number.parseInt(e.target.value) || 0)}
                 placeholder="5"

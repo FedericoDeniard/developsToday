@@ -24,8 +24,10 @@ export default function RootLayout({
       <body className={inter.className}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <SidebarProvider defaultOpen={true}>
-            <AppSidebar />
-            <main className="flex-1 overflow-auto">{children}</main>
+            <div className="flex min-h-screen">
+              <AppSidebar />
+              <div className="flex-1 flex flex-col ml-64">{children}</div>
+            </div>
           </SidebarProvider>
           <Toaster richColors position="top-right" />
         </ThemeProvider>

@@ -1,36 +1,145 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Spy Cats Dashboard
+
+A comprehensive management dashboard for the Spy Cats Agency built with Next.js 15, TypeScript, and Tailwind CSS.
+
+## Features
+
+- 🐱 **Complete CRUD Operations** for spy cats
+- 📊 **Analytics Dashboard** with statistics and insights
+- 🌙 **Dark/Light Mode** support
+- 📱 **Responsive Design** for all devices
+- 🔍 **Search & Filtering** capabilities
+- 📥 **Data Export** (CSV/JSON)
+- 🎯 **Mission Tracking** system
+- 🎨 **Modern UI** with shadcn/ui components
+
+## Tech Stack
+
+- **Framework**: Next.js 15 with App Router
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **UI Components**: shadcn/ui (custom implementation)
+- **Icons**: Lucide React
+- **Notifications**: Sonner
+- **Theme**: next-themes
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Node.js 18+ 
+- npm or yarn
+- Your FastAPI backend running on port 8000
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Installation
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. Clone or download the project
+2. Install dependencies:
+   \`\`\`bash
+   npm install
+   \`\`\`
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+3. Create environment file:
+   \`\`\`bash
+   cp .env.example .env.local
+   \`\`\`
 
-## Learn More
+4. Update the API URL in `.env.local`:
+   \`\`\`
+   NEXT_PUBLIC_API_URL=http://localhost:8000
+   \`\`\`
 
-To learn more about Next.js, take a look at the following resources:
+5. Start the development server:
+   \`\`\`bash
+   npm run dev
+   \`\`\`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+6. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## API Integration
 
-## Deploy on Vercel
+The dashboard integrates with your FastAPI backend using these endpoints:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- `GET /cats` - Fetch all spy cats
+- `POST /cats` - Create new spy cat
+- `GET /cats/{id}` - Get single spy cat
+- `PATCH /cats/{id}/salary` - Update cat salary
+- `DELETE /cats/{id}` - Delete spy cat
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Project Structure
+
+\`\`\`
+src/
+├── app/
+│   ├── layout.tsx          # Root layout with providers
+│   ├── page.tsx            # Main dashboard page
+│   └── globals.css         # Global styles and CSS variables
+├── components/
+│   ├── ui/                 # shadcn/ui components
+│   ├── app-sidebar.tsx     # Navigation sidebar
+│   ├── spy-cat-form.tsx    # Add new cat form
+│   ├── spy-cats-table.tsx  # Cats data table
+│   ├── stats-cards.tsx     # Analytics cards
+│   ├── export-data.tsx     # Data export functionality
+│   ├── mission-tracker.tsx # Mission management
+│   ├── theme-provider.tsx  # Theme context
+│   └── theme-toggle.tsx    # Dark/light mode toggle
+└── lib/
+    ├── api.ts              # API client
+    ├── types.ts            # TypeScript interfaces
+    └── utils.ts            # Utility functions
+\`\`\`
+
+## Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run start` - Start production server
+- `npm run lint` - Run ESLint
+- `npm run type-check` - Check TypeScript types
+
+## Features Overview
+
+### Dashboard
+- Real-time statistics and analytics
+- Experience level distribution
+- Salary insights and payroll totals
+
+### Spy Cat Management
+- Add new agents with validation
+- Search and filter by name, breed, experience
+- Update salaries with confirmation
+- Delete agents with safety confirmation
+
+### Data Export
+- Export to CSV for spreadsheet analysis
+- Export to JSON for data backup
+- Timestamped filenames
+
+### Mission Tracking
+- View active, completed, and pending missions
+- Progress tracking for active operations
+- Agent assignment visualization
+
+### Theme Support
+- Light and dark mode
+- System preference detection
+- Smooth theme transitions
+
+## Environment Variables
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `NEXT_PUBLIC_API_URL` | FastAPI backend URL | `http://localhost:8000` |
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Test thoroughly
+5. Submit a pull request
+
+## License
+
+This project is for educational purposes as part of the Spy Cats Agency technical assessment.
