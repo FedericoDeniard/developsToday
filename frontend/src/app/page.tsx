@@ -78,7 +78,7 @@ export default function Dashboard() {
   }, [])
 
   return (
-    <>
+    <div className="flex flex-col min-h-screen w-full">
       <header className="sticky top-0 z-30 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="flex h-14 items-center justify-between px-6">
           <div className="flex items-center gap-4">
@@ -95,8 +95,8 @@ export default function Dashboard() {
         </div>
       </header>
 
-      <main className="flex-1 overflow-auto">
-        <div className="space-y-6 p-6">
+      <main className="flex-1 w-full overflow-auto">
+        <div className="w-full max-w-none space-y-6 p-6">
           {error && (
             <Alert variant="destructive">
               <AlertCircle className="h-4 w-4" />
@@ -133,6 +133,6 @@ export default function Dashboard() {
           </div>
         </div>
       </main>
-    </>
+    </div>
   )
 }
