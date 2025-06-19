@@ -3,7 +3,15 @@ from typing import Union, List
 from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field, validator
-from services.db import Database, Cat, Mission, Target, Note, StatusType
+from typing import List, Optional, Union
+
+from services.db import Database
+from models.models import Cat, Mission, Target, Note, StatusType
+from utils.schemas import (
+    CatCreate, CatResponse, TargetCreate, MissionCreate, 
+    MissionResponse, TargetResponse, NoteCreate, NoteResponse,
+    SalaryUpdate, StatusUpdate, CatAssignment
+)
 
 app = FastAPI(title="Cat Mission API", version="1.0.0")
 app.add_middleware(
@@ -26,61 +34,6 @@ async def startup_event():
 @app.on_event("shutdown")
 async def shutdown_event():
     await database.shutdown()
-
-class CatCreate(Cat):
-    name: str = Field(..., min_length=1, max_length=255, description="Cat name")
-    years_of_experience: int = Field(..., ge=0, le=50, description="Years of experience (0-50)")
-    breed: str = Field(..., min_length=1, max_length=100, description="Cat breed")
-    salary: int = Field(..., gt=0, description="Salary must be positive")
-
-class CatResponse(Cat):
-    id: int
-    name: str
-    years_of_experience: int
-    breed: str
-    salary: int
-
-class TargetCreate(Target):
-    status: StatusType
-    name: str = Field(..., min_length=1, max_length=255, description="Target name")
-    country: str = Field(..., min_length=1, max_length=100, description="Target country")
-
-class MissionCreate(Mission):
-    assigned_cat: Union[int, None] = Field(None, gt=0, description="Cat ID if assigning")
-    status: StatusType
-    title: str = Field(..., min_length=1, max_length=255, description="Mission title")
-    targets: List[TargetCreate] = Field(..., min_items=1, max_items=3, description="1-3 targets required")
-
-class MissionResponse(Mission):
-    id: int
-    assigned_cat: Union[int, None]
-    status: str
-    title: str
-
-class TargetResponse(Target):
-    id: int
-    assigned_mission: int
-    status: str
-    name: str
-    country: str
-
-class NoteCreate(Note):
-    target_id: int = Field(..., gt=0, description="Target ID")
-    message: str = Field(..., min_length=1, max_length=1000, description="Note message")
-
-class NoteResponse(Note):
-    id: int
-    target_id: int
-    message: str
-
-class SalaryUpdate(BaseModel):
-    salary: int = Field(..., gt=0, description="New salary must be positive")
-
-class StatusUpdate(BaseModel):
-    status: StatusType
-
-class CatAssignment(BaseModel):
-    cat_id: int = Field(..., gt=0, description="Cat ID to assign")
 
 # Cat endpoints
 @app.post("/cats", response_model=CatResponse, status_code=201)
@@ -180,20 +133,7 @@ async def create_mission(mission_data: MissionCreate, db: Database = Depends(get
             if not cat:
                 raise HTTPException(status_code=400, detail="Assigned cat does not exist")
         
-        mission = Mission(
-            assigned_cat=mission_data.assigned_cat,
-            status=mission_data.status,
-            title=mission_data.title
-        )
-        
-        targets = [Target(
-            assigned_mission=0,  
-            status=target.status,
-            name=target.name,
-            country=target.country
-        ) for target in mission_data.targets]
-        
-        mission_id = await db.create_mission(mission, targets)
+        mission_id = await db.create_mission(mission_data)
         return {"mission_id": mission_id, "message": "Mission created successfully"}
     except HTTPException:
         raise

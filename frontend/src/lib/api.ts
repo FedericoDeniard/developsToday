@@ -25,9 +25,9 @@ class ApiClient {
 
     if (!response.ok) {
       const errorData: ApiError = await response.json().catch(() => ({
-        message: "An unexpected error occurred",
+        detail: "An unexpected error occurred",
       }))
-      throw new Error(errorData.message || `HTTP ${response.status}`)
+      throw new Error(errorData.detail || `HTTP ${response.status}`)
     }
 
     return response.json()

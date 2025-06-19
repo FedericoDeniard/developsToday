@@ -1,37 +1,11 @@
 from enum import Enum
 from re import A
 from pydantic import BaseModel, Field
-from typing import Optional
 import asyncpg
-import httpx
+from models.models import Cat, Mission, Target, Note, StatusType
+from utils.schemas import MissionCreate, TargetCreate, NoteCreate, CatCreate, CatAssignment, SalaryUpdate, StatusUpdate
 from constants.keys import KEYS
 
-class StatusType(Enum):
-    PENDING = "pending"
-    IN_PROGRESS = "in_progress"
-    FINISHED = "finished"
-    CANCELLED = "cancelled"
-
-class Cat(BaseModel):
-    name: str
-    years_of_experience: int
-    breed: str
-    salary: int
-
-class Mission(BaseModel):
-    assigned_cat: Optional[int] = None
-    status: StatusType
-    title: str
-
-class Target(BaseModel):
-    assigned_mission: int
-    status: StatusType
-    name: str
-    country: str
-
-class Note(BaseModel):
-    target_id: int
-    message: str
 
 class Database:
     def __init__(self):
@@ -131,7 +105,8 @@ class Database:
                         return True
             return False
 
-    async def create_mission(self, mission: Mission, targets: list[Target]):
+    async def create_mission(self, mission: MissionCreate):
+        targets = mission.targets
         if len(targets) == 0:
             raise ValueError("No targets provided")
         if len(targets) > 3:
