@@ -17,7 +17,7 @@ interface SpyCatFormProps {
 export function SpyCatForm({ onSubmit, isLoading = false }: SpyCatFormProps) {
   const [formData, setFormData] = useState<CreateSpyCatRequest>({
     name: "",
-    yearsOfExperience: 0,
+    years_of_experience: 0,
     breed: "",
     salary: 0,
   })
@@ -28,7 +28,7 @@ export function SpyCatForm({ onSubmit, isLoading = false }: SpyCatFormProps) {
     // Reset form after successful submission
     setFormData({
       name: "",
-      yearsOfExperience: 0,
+      years_of_experience: 0,
       breed: "",
       salary: 0,
     })
@@ -80,8 +80,8 @@ export function SpyCatForm({ onSubmit, isLoading = false }: SpyCatFormProps) {
                 id="experience"
                 type="number"
                 min="0"
-                value={formData.yearsOfExperience}
-                onChange={(e) => handleInputChange("yearsOfExperience", Number.parseInt(e.target.value) || 0)}
+                value={formData.years_of_experience}
+                onChange={(e) => handleInputChange("years_of_experience", Number.parseInt(e.target.value) || 0)}
                 placeholder="5"
                 required
               />
